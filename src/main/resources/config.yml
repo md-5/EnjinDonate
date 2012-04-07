@@ -1,0 +1,5 @@
+# The main ${project.name} config. %1$s = player, %2$s = group
+interval: 5
+url: http://stompzcraft.com/api/m-shopping-purchases/m/4649760
+command: manuadd %1$s %2$s
+message: Promoting %1$s to %2$s
