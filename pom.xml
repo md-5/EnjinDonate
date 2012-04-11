@@ -9,8 +9,8 @@
     <packaging>jar</packaging>
 
     <name>EnjinDonate</name>
-    <description>Plugin to automatically promote those who donate with enjin</description>
-    <url>https://github.com/md-5/EnjinDonate</url>
+    <description>Plugin to automatically promote those who donate with an Enjin shop module</description>
+    <url>https://github.com/Shadowraze/EnjinDonate</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,12 +21,17 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.2.5-R1.1</version>
+            <version>1.2.5-R1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.2.5-R1.1</version>
+            <version>1.2.5-R1.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>0.10.8</version>
         </dependency>
     </dependencies>
 
@@ -51,8 +56,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
         </plugins>

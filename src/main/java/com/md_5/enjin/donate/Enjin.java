@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,7 +29,11 @@ public class Enjin extends JavaPlugin {
         url = conf.getString("url");
         command = conf.getString("command");
         message = conf.getString("message");
-        getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Checker(), 0, interval);
+        if (url != null) {
+            getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Checker(), 0, interval);
+        } else {
+            getLogger().severe("Please set your shop url in config.yml");
+        }
     }
 
     @Override
@@ -36,7 +41,7 @@ public class Enjin extends JavaPlugin {
         getServer().getScheduler().cancelTasks(this);
     }
 
-    public List<DonationData> getJSON(String url) {
+    private List<DonationData> getJSON(String url) {
         try {
             InputStreamReader reader = new InputStreamReader(new URL(url).openStream());
             JsonArray array = new JsonParser().parse(reader).getAsJsonArray();
@@ -60,12 +65,17 @@ public class Enjin extends JavaPlugin {
     public void claim(DonationData donation) {
         String user = donation.getCustom_field();
         String rank = donation.getItem_name();
-        getServer().dispatchCommand(getServer().getConsoleSender(), String.format(command, user, rank));
-        List<String> claims = getConfig().getStringList("claims");
-        claims.add(donation.getPurchase_date());
-        getConfig().set("claims", claims);
-        saveConfig();
-        getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + String.format(message, user, rank));
+        if (user != null) {
+            getServer().dispatchCommand(getServer().getConsoleSender(), String.format(command, user, rank));
+            List<String> claims = getConfig().getStringList("claims");
+            claims.add(donation.getPurchase_date());
+            if (claims.size() > 100) {
+                claims.remove(0);
+            }
+            getConfig().set("claims", claims);
+            saveConfig();
+            getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + String.format(message, user, rank));
+        }
     }
 
     private class Checker implements Runnable {
@@ -77,6 +87,25 @@ public class Enjin extends JavaPlugin {
                     claim(donation);
                 }
             }
+        }
+    }
+
+    @Data
+    public class DonationData {
+
+        private UserDetails user;
+        private String item_name;
+        private String item_price;
+        private String purchase_date;
+        private String currency;
+        private String item_id;
+        private String custom_field;
+
+        @Data
+        public class UserDetails {
+
+            private String user_id;
+            private String user_name;
         }
     }
 }
