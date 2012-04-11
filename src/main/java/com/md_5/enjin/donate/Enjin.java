@@ -74,7 +74,9 @@ public class Enjin extends JavaPlugin {
             }
             getConfig().set("claims", claims);
             saveConfig();
-            getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + String.format(message, user, rank));
+            if (message != null) {
+                getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + String.format(message, user, rank));
+            }
         }
     }
 
