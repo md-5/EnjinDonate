@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -43,7 +44,9 @@ public class Enjin extends JavaPlugin {
 
     private List<DonationData> getJSON(String url) {
         try {
-            InputStreamReader reader = new InputStreamReader(new URL(url).openStream());
+            URLConnection con = new URL(url).openConnection();
+            con.setRequestProperty("User-Agent", "EnjinDonate by md_5");
+            InputStreamReader reader = new InputStreamReader(con.getInputStream());
             JsonArray array = new JsonParser().parse(reader).getAsJsonArray();
             Gson gson = new Gson();
             List<DonationData> donations = new ArrayList<DonationData>();
@@ -82,6 +85,7 @@ public class Enjin extends JavaPlugin {
 
     private class Checker implements Runnable {
 
+        @Override
         public void run() {
             getLogger().info("Checking for new donations");
             for (DonationData donation : getJSON(url)) {
