@@ -1,0 +1,21 @@
+# The main ${project.name} config. %1$s = player, %2$s = group
+interval: 5
+url: null
+command: pex user %1$s group add %2$s
+message: Promoting %1$s to %2$s
+# Reward config
+items:
+  groupie: 5
+  donator: 10
+  vip: 25
+  elite: 45
+  patron: 75
+  artisan: 100
+  benefactor: 125
+  builder: 200
+# Record of each players claims
+players:
+  Notch: 16
+# Record of every donation claimed
+claims:
+- '0000000000'

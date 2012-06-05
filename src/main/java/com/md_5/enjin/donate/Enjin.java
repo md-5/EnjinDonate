@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import lombok.Data;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,16 +21,21 @@ public class Enjin extends JavaPlugin {
     private String url;
     private String command;
     private String message;
+    private Map<String, Object> items;
 
     @Override
     public void onEnable() {
         FileConfiguration conf = getConfig();
         conf.options().copyDefaults(true);
         saveConfig();
+        //
         interval = conf.getInt("interval") * 1200;
         url = conf.getString("url");
         command = conf.getString("command");
         message = conf.getString("message");
+        //
+        items = conf.getConfigurationSection("items").getValues(false);
+        //
         if (url != null) {
             getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Checker(), 0, interval);
         } else {
@@ -40,6 +46,41 @@ public class Enjin extends JavaPlugin {
     @Override
     public void onDisable() {
         getServer().getScheduler().cancelTasks(this);
+    }
+
+    private void setClaimed(String date) {
+        List<String> claims = getConfig().getStringList("claims");
+        claims.add(date);
+        if (claims.size() > 100) {
+            claims.remove(0);
+        }
+        getConfig().set("claims", claims);
+        saveConfig();
+    }
+
+    private boolean isClaimed(String date) {
+        return getConfig().getStringList("claims").contains(date);
+    }
+
+    private void setMoney(String player, int amount) {
+        getConfig().set("players." + player, amount);
+        saveConfig();
+    }
+
+    private int getMoney(String player) {
+        return getConfig().getInt("players." + player);
+    }
+
+    private String getReward(int funds) {
+        String itemName = null;
+        int largest = 0;
+        for (Map.Entry<String, Object> i : items.entrySet()) {
+            int cost = (Integer) i.getValue();
+            if (cost > largest && cost <= funds) {
+                itemName = i.getKey();
+            }
+        }
+        return itemName;
     }
 
     private List<DonationData> getJSON(String url) {
@@ -61,22 +102,18 @@ public class Enjin extends JavaPlugin {
         }
     }
 
-    public boolean isClaimed(String date) {
-        return getConfig().getStringList("claims").contains(date);
-    }
-
     public void claim(DonationData donation) {
         String user = donation.getCustom_field();
-        String rank = donation.getItem_name();
+        int paid = Math.round(Float.parseFloat(donation.getItem_price()));
         if (user != null) {
+            int current = getMoney(user) + paid;
+            setMoney(user, current);
+            //
+            setClaimed(donation.getPurchase_date());
+            //
+            String rank = getReward(current);
             getServer().dispatchCommand(getServer().getConsoleSender(), String.format(command, user, rank));
-            List<String> claims = getConfig().getStringList("claims");
-            claims.add(donation.getPurchase_date());
-            if (claims.size() > 100) {
-                claims.remove(0);
-            }
-            getConfig().set("claims", claims);
-            saveConfig();
+            //
             if (message != null) {
                 getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + String.format(message, user, rank));
             }

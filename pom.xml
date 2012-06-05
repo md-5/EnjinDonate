@@ -15,23 +15,24 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.number>Unknown</build.number>
+        <bukkit.version>1.2.5-R3.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.2.5-R2.1-SNAPSHOT</version>
+            <version>${bukkit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.2.5-R2.1-SNAPSHOT</version>
+            <version>${bukkit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>0.10.8</version>
+            <version>0.11.0</version>
         </dependency>
     </dependencies>
 
