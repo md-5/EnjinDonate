@@ -77,6 +77,7 @@ public class Enjin extends JavaPlugin {
         for (Map.Entry<String, Object> i : items.entrySet()) {
             int cost = (Integer) i.getValue();
             if (cost > largest && cost <= funds) {
+                largest = cost;
                 itemName = i.getKey();
             }
         }
