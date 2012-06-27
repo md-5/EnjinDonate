@@ -1,5 +1,5 @@
 # The main ${project.name} config. %1$s = player, %2$s = group
 interval: 5
 url: null
-command: pex user %1$s group add %2$s
-message: Promoting %1$s to %2$s
+command: pex user {0} group add {1}
+message: Promoting {0} to {1}

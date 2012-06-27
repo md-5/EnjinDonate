@@ -1,13 +1,10 @@
 package com.md_5.enjin.donate;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import lombok.Data;
@@ -17,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Enjin extends JavaPlugin {
 
+    private Gson gson = new Gson();
     private int interval;
     private String url;
     private String command;
@@ -84,17 +82,12 @@ public class Enjin extends JavaPlugin {
         return itemName;
     }
 
-    private List<DonationData> getJSON(String url) {
+    private DonationData[] getJSON(String url) {
         try {
             URLConnection con = new URL(url).openConnection();
             con.setRequestProperty("User-Agent", "EnjinDonate by md_5");
             InputStreamReader reader = new InputStreamReader(con.getInputStream());
-            JsonArray array = new JsonParser().parse(reader).getAsJsonArray();
-            Gson gson = new Gson();
-            List<DonationData> donations = new ArrayList<DonationData>();
-            for (JsonElement el : array) {
-                donations.add(gson.fromJson(el, DonationData.class));
-            }
+            DonationData[] donations = gson.fromJson(reader, DonationData[].class);
             reader.close();
             return donations;
         } catch (Exception ex) {
@@ -113,10 +106,10 @@ public class Enjin extends JavaPlugin {
             setClaimed(donation.getPurchase_date());
             //
             String rank = getReward(current);
-            getServer().dispatchCommand(getServer().getConsoleSender(), String.format(command, user, rank));
+            getServer().dispatchCommand(getServer().getConsoleSender(), MessageFormat.format(command, user, rank));
             //
             if (message != null) {
-                getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + String.format(message, user, rank));
+                getServer().broadcastMessage(ChatColor.LIGHT_PURPLE + MessageFormat.format(message, user, rank));
             }
         }
     }
