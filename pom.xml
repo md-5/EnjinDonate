@@ -15,7 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.number>Unknown</build.number>
-        <bukkit.version>1.2.5-R4.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.3.1-R2.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <dependencies>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>0.11.0</version>
+            <version>0.11.2</version>
         </dependency>
     </dependencies>
 

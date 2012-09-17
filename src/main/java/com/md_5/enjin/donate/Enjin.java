@@ -1,6 +1,5 @@
 package com.md_5.enjin.donate;
 
-import com.google.gson.Gson;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -10,6 +9,7 @@ import java.util.Map;
 import lombok.Data;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Enjin extends JavaPlugin {
@@ -137,12 +137,13 @@ public class Enjin extends JavaPlugin {
         private String currency;
         private String item_id;
         private String custom_field;
+        private String character;
 
         @Data
         public class UserDetails {
 
             private String user_id;
-            private String user_name;
+            private String username;
         }
     }
 }
