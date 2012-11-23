@@ -4,4 +4,4 @@ description: ${project.description}
 author: md_5
 website: ${project.url}
 
-main: com.md_5.enjin.donate.Enjin
+main: net.md_5.enjin.donate.Enjin
