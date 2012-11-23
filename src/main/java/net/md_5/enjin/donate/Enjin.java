@@ -1,4 +1,4 @@
-package com.md_5.enjin.donate;
+package net.md_5.enjin.donate;
 
 import java.io.InputStreamReader;
 import java.net.URL;
