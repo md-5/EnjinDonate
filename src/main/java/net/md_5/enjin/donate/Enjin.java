@@ -49,9 +49,6 @@ public class Enjin extends JavaPlugin {
     private void setClaimed(String date) {
         List<String> claims = getConfig().getStringList("claims");
         claims.add(date);
-        if (claims.size() > 100) {
-            claims.remove(0);
-        }
         getConfig().set("claims", claims);
         saveConfig();
     }
@@ -97,7 +94,7 @@ public class Enjin extends JavaPlugin {
     }
 
     public void claim(DonationData donation) {
-        String user = donation.getCustom_field();
+        String user = donation.getCustom_field().replace('.', '^');
         int paid = Math.round(Float.parseFloat(donation.getItem_price()));
         if (user != null) {
             int current = getMoney(user) + paid;
